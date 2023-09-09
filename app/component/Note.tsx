@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-type status = "" | "error" | "success";
+type status = "warning" | "error" | "success";
 interface SectionProps {
   title: string;
   children: ReactNode;
@@ -9,7 +9,7 @@ interface SectionProps {
 
 const Note: React.FC<SectionProps> = ({ title, status, children }) => {
   return (
-    <section className="bg-white  mt-5 rounded-lg  shadow-md px-2">
+    <section className=" border border-red-500 mt-5 rounded-lg  shadow-md px-2">
       <div className="border-b border-red-500  py-2 ">
         <h5 className="font-bold text-red-500"> {title}</h5>
       </div>
@@ -19,3 +19,5 @@ const Note: React.FC<SectionProps> = ({ title, status, children }) => {
 };
 
 export default Note;
+
+
