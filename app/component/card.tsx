@@ -4,14 +4,16 @@ import { Dispatch, SetStateAction } from "react";
 import Button from "./button";
 import clsx from "clsx";
 
-interface CardMonth {
+interface CardProps {
   bulan: string;
   tanggal: number;
-  setTanggal: Dispatch<SetStateAction<any>>;
-  setBulan: Dispatch<SetStateAction<any>>;
+  setTanggal: Dispatch<SetStateAction<number>>;
+  setBulan: Dispatch<SetStateAction<string>>;
 }
 
-const Card: React.FC<CardMonth> = ({
+const agustus: string = "Agustus";
+
+const Card: React.FC<CardProps> = ({
   bulan,
   tanggal,
   setBulan,
@@ -33,13 +35,14 @@ const Card: React.FC<CardMonth> = ({
               {tanggal}
             </span>
           </div>
+
           <Button
             title="Clear"
             colorSchema="red"
             variant="outline"
             onClick={() => {
               setTanggal(0);
-              setBulan("Agustus");
+              setBulan(agustus);
             }}
           />
         </div>

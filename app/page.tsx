@@ -1,23 +1,16 @@
-"use client"; // gunakan use client karena ada onChange pda komponen
+"use client";
 import { useState } from "react";
-import BelajarState from "./component/belajarstate";
 import Card from "./component/card";
 import Button from "./component/button";
 import InputText from "./component/InputText";
 import React from "react";
 
-export type Identitas = {
-  nama: string;
-  sekolah: string;
-  umur: number | null;
+
+const HandleSumbit = (xevent: string) => {
+  alert(`🥳 ${xevent} 🥳`);
 };
 
-export type Hasil = {
-  mata_pelajaran: string;
-  nilai: number | null;
-};
-
-let Home = () => {
+const Home = () => {
   let [tanggal, setTanggal] = useState(0);
   let [bulan, setBulan] = useState("Agustus");
 
@@ -57,7 +50,6 @@ let Home = () => {
         }}
       /> */}
 
-      
       <section className="relative top-0 left-0 right-0 bottom-0">
         <select
           name={"bulan"}
@@ -94,9 +86,10 @@ let Home = () => {
 
       <Button
         onClick={() => {
-          alert("🥳 Hut Republik Indonesia 🥳");
+          HandleSumbit("Hut Republik Indonesia");
+          console.log("xevent", HandleSumbit);
         }}
-        isDisabled={tanggal !== 17 || bulan !== "Agustus"}
+        isDisabled={tanggal != 17 || bulan != "Agustus"}
         colorSchema="rose"
         variant="outline"
         title="Event"
