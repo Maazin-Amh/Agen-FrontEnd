@@ -1,10 +1,10 @@
-"use client"; // gunakan use client karena ada onChange pda komponen
+"use client"; 
 import { useState } from "react";
-import Button from "../component/button";
+import Button from "@/components/Button";
 
 const Home = () => {
-  let [message, setMessage] = useState("hai"); // jika string, dengan data awal "hai"
-  let [count, setCount] = useState(0); // jika number , dengan data awal 0
+  let [message, setMessage] = useState("hai"); 
+  let [count, setCount] = useState(0); 
 
   const increment = () => {
     setCount((c) => c + 1);

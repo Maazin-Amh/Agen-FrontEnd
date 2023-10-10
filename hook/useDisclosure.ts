@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useClosure = () => {
+export const useDisclosure = () => {
   let [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onOpen = () => {

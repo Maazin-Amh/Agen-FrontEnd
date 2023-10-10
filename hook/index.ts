@@ -1,1 +1,1 @@
-export * from "./useclosure";
+export * from "./useDisclosure";

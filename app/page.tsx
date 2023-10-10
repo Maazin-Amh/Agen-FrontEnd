@@ -1,100 +1,106 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useState } from "react";
-import Card from "./component/card";
-import Button from "./component/button";
-import InputText from "./component/InputText";
-import React from "react";
-
-
-const HandleSumbit = (xevent: string) => {
-  alert(`🥳 ${xevent} 🥳`);
-};
+import { useEffect, useState } from "react";
+// import Button from "@/component/button";
 
 const Home = () => {
-  let [tanggal, setTanggal] = useState(0);
-  let [bulan, setBulan] = useState("Agustus");
+  const [calcu, setcalcu] = useState("0");
+  const [hasil, setHasil] = useState("");
+  const [showResult, setShowResult] = useState(false); 
 
+  const buttononklik = (title: any) => {
+    if (title === "=") {
+      jumlah();
+    } else if (title === "c") {
+      setcalcu("0");
+      setHasil("");
+      setShowResult(false); 
+    } else if (title === ",") {
+      if (!calcu.includes(",")) {
+        setcalcu((prevcalcu) => prevcalcu + title);
+      }
+    } else {
+      if (calcu === "0") {
+        setcalcu(title);
+        setShowResult(false); 
+      } else {
+        setcalcu((prevcalcu) => prevcalcu + title);
+      }
+    }
+  };
+
+  const deleteangka = () => {
+    setcalcu((prevcalcu) => prevcalcu.slice(0, -1));
+  };
+
+  const jumlah = () => {
+  if (calcu !== "" && /[0-9]$/.test(calcu)) {
+    const result = eval(calcu);
+    setHasil(result.toString());
+    setShowResult(true);
+  } else {
+    setHasil("");
+    setShowResult(false); 
+  }
+};
+  
+  useEffect(() => {
+    jumlah();
+  }, [calcu]);
+  
+  
   return (
-    <main className="space-y-5 m-5">
-      <h1>Latihan</h1>
-      <Card
-        bulan={bulan}
-        tanggal={tanggal}
-        setTanggal={setTanggal}
-        setBulan={setBulan}
-      />
-      <Button
-        onClick={() => {
-          setTanggal((c) => c + 1);
-        }}
-        colorSchema="blue"
-        isDisabled={tanggal > 30}
-        variant="solid"
-        title="tambah"
-      />
-      <Button
-        onClick={() => {
-          setTanggal((c) => c - 1);
-        }}
-        isDisabled={tanggal < 1}
-        colorSchema="red"
-        variant="solid"
-        title="kurang"
-      />
-      {/* <InputText
-        id="bulan"
-        name={"bulan"}
-        value={bulan}
-        onChange={(e) => {
-          setBulan(e.target.value);
-        }}
-      /> */}
+    <>
+      <main className="flex justify-center my-10">
+        <section className="w-[700px] flex flex-col gap-10 p-5 h-full bg-slate-300 rounded-md">
+          <span className="flex justify-center items-center">
+            <h1 className="font-medium text-center text-xl w-[40%]">
+              Penilaian tengah semester front-end developer
+            </h1>
+          </span>
+          <div className="bg-white w-full font-semibold text-3xl flex justify-between h-[100px] border-2 p-3 border-gray-500/50 rounded">
+            <span id="calcu">{calcu}</span>
+            <span className="items-end flex">{showResult ? hasil : ""}</span>
+          </div>
+          {/* <div className="grid grid-cols-4 gap-5">
+            <Button title="7" warna="grey" onClick={() => buttononklik("7")} />
+            <Button title="8" warna="grey" onClick={() => buttononklik("8")} />
+            <Button title="9" warna="grey" onClick={() => buttononklik("9")} />
+            <Button title="DEL" warna="merah" onClick={deleteangka} />
+            <Button title="4" warna="grey" onClick={() => buttononklik("4")} />
+            <Button title="5" warna="grey" onClick={() => buttononklik("5")} />
+            <Button title="6" warna="grey" onClick={() => buttononklik("6")} />
+            <Button title="+" warna="biru" onClick={() => buttononklik("+")} />
+            <Button title="1" warna="grey" onClick={() => buttononklik("1")} />
+            <Button title="2" warna="grey" onClick={() => buttononklik("2")} />
+            <Button title="3" warna="grey" onClick={() => buttononklik("3")} />
+            <Button title="-" warna="biru" onClick={() => buttononklik("-")} />
+            <Button
+              title="c"
+              warna="merah"
+              height={48}
+              onClick={() => {
+                setcalcu("0");
+                setHasil("");
+                setShowResult(false);
+              }}
+            />
 
-      <section className="relative top-0 left-0 right-0 bottom-0">
-        <select
-          name={"bulan"}
-          id="bulan"
-          className="py-2 px-4 pr-9 w-full block appearance-none rounded-md text-sm border-2 outline-none border-sky-500"
-          value={bulan}
-          onChange={(e) => {
-            setBulan(e.target.value);
-          }}
-        >
-          <option value="Januari">Januari</option>
-          <option value="Februari">Februari</option>
-          <option value="Maret">Maret</option>
-          <option value="April">April</option>
-          <option value="Mei">Mei</option>
-          <option value="Juni">Juni</option>
-          <option value="Juli">Juli</option>
-          <option value="Agustus">Agustus</option>
-          <option value="September">September</option>
-          <option value="Okteber">Okteber</option>
-          <option value="November">November</option>
-          <option value="Desember">Desember</option>
-        </select>
-        <div className="pointer-events-none absolute right-0 bottom-0 top-0 flex items-center px-4 text-gray-700">
-          <svg
-            className="fill-current h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.293 12.293a1 1 0 001.414 0l5-5a1 1 0 00-1.414-1.414L10 10.586 4.707 5.293a1 1 0 00-1.414 1.414l5 5z" />
-          </svg>
-        </div>
-      </section>
+            <Button title="0" warna="grey" onClick={() => buttononklik("0")} />
 
-      <Button
-        onClick={() => {
-          HandleSumbit("Hut Republik Indonesia");
-          console.log("xevent", HandleSumbit);
-        }}
-        isDisabled={tanggal != 17 || bulan != "Agustus"}
-        colorSchema="rose"
-        variant="outline"
-        title="Event"
-      />
-    </main>
+            <Button title="x" warna="biru" onClick={() => buttononklik("*")} />
+            <Button title="/" warna="biru" onClick={() => buttononklik("/")} />
+            <Button
+              title=","
+              warna="kuning"
+              onClick={() => buttononklik(",")}
+            />
+
+            <Button title="=" warna="biru" width={80} onClick={() => buttononklik("=")}/>
+          </div> */}
+        </section>
+      </main>
+    </>
   );
 };
 
