@@ -12,6 +12,6 @@ export interface BaseResponsePagination {
     page: number;
     limit: number;
     pageSize: number;
-    total: number;
+    total_page: number;
   };
 }

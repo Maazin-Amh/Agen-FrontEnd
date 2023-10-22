@@ -4,7 +4,7 @@ export const useDisclosure = () => {
   let [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onOpen = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(true);
   };
 
   const onClose = () => {

@@ -1,30 +1,38 @@
 "use client";
-import { Pagination } from "@/components/Pagination";
 import { Table, Th, Thead, Tr, Tbody, Td } from "@/components/Tabel";
-import { useQuery } from "@tanstack/react-query";
-import { UserListResponse } from "./interface";
-import { axiosClient } from "@/lib/axiosClient";
 import { dateUtil } from "@/utils";
+import useUserModule from "./lib";
+import Button from "@/components/Button";
+import { Pagination } from "@/components/Pagination";
+import { useDisclosure } from "@/hook";
+import { Drawer } from "@/components/Drawer";
+import Filter from "./module/filter";
 
 const User = () => {
-  const getUserList = async (): Promise<UserListResponse> => {
-    return axiosClient.get("/user/list").then((res) => res.data);
-  };
-
-  const { data, isFetching, isLoading } = useQuery(
-    ["user/list"],
-    () => getUserList(),
-    {
-      select: (response) => response,
-    }
-  );
-
-  console.log("data", data);
-  console.log("isFetching", isFetching);
-
+  const { useUserList } = useUserModule();
+  const { onClose, isOpen, onOpen } = useDisclosure();
+  const { data, isFetching, params, handePage, setParams, handlePageSize } =
+    useUserList();
   return (
     <>
-      <section className="container mx-auto">
+      <Drawer
+        isOpen={isOpen}
+        onClear={() => console.log("first")}
+        onSubmit={() => console.log("first")}
+        onClose={onClose}
+        title="Filter User"
+      >
+        <Filter params={params} setParams={setParams} />
+      </Drawer>
+      <section className="container px-4 mx-auto">
+        <div className="grid grid-cols-1 gap-5 py-5">
+          <Button
+            title="Filter"
+            width="md"
+            onClick={onOpen}
+            colorSchema="blue"
+          />
+        </div>
         <Table>
           <Thead>
             <Tr>
@@ -80,7 +88,7 @@ const User = () => {
             {data?.data.map((item, index) => (
               <Tr key={index}>
                 <Td>
-                  <span>{index +1}</span>
+                  <span>{index + 1}</span>
                 </Td>
                 <Td>
                   <span>{item.nama}</span>
@@ -107,6 +115,13 @@ const User = () => {
             ))}
           </Tbody>
         </Table>
+        <Pagination
+          page={params.page}
+          pageSize={params.pageSize}
+          handlePageSize={handlePageSize}
+          handlePage={handePage}
+          pagination={data?.pagination}
+        />
       </section>
     </>
   );
