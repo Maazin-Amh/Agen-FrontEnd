@@ -36,12 +36,27 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
         [e.target.name]: e.target.value,
       };
     });
-    if (params.from_year > params.to_year) {
-      alert(
-        `maaf tahun yang anda pilih harus lebih besar dari ${params.from_year}`
-      );
+
+    if (e.target.name === "to_year") {
+      if (Number(params.to_year) > e.target.value) {
+        alert(
+          `tahun yang anda masukan harus lebih besar dari ${params.from_year}`
+        );
+      }
+    }
+
+    if (e.target.name === "from_year") {
+      if (e.target.value > Number(params.to_year)) {
+        setParams((prevParams: UserListFilter) => {
+          return {
+            ...prevParams,
+            to_year: "",
+          };
+        });
+      }
     }
   };
+
   return (
     <section>
       <section className="space-y-3 pt-5">

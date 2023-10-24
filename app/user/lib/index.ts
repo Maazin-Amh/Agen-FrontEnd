@@ -35,7 +35,27 @@ const useUserModule = () => {
         page: 1,
       }));
     };
-    
+
+    const handeFilter = () => {
+      setFilterParams(() => {
+        return {
+          ...params,
+          page: 1,
+        };
+      });
+      setParams((prevParams) => {
+        return {
+          ...prevParams,
+          page: 1,
+        };
+      });
+    };
+
+    const handleClear = () => {
+      setFilterParams(defaultParam);
+      setParams(defaultParam);
+    };
+
     const handePage = (page: number) => {
       setParams((params) => ({ ...params, page: page }));
       setFilterParams((params) => ({ ...params, page: page }));
@@ -47,7 +67,17 @@ const useUserModule = () => {
         select: (response) => response,
       }
     );
-    return { data, isFetching, isLoading, params, handePage, handlePageSize, setParams };
+    return {
+      data,
+      isFetching,
+      isLoading,
+      params,
+      handeFilter,
+      handePage,
+      handlePageSize,
+      setParams,
+      handleClear
+    };
   };
 
   return { useUserList };

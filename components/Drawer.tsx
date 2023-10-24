@@ -39,7 +39,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         ...springs
       }}
       className={
-        "shadow-sm  md:w-[50%] lg:w-[30%] xl:w-[20%] w-full md bg-white border border-gray-100 px-5"
+        "shadow-sm  md:w-[50%] lg:w-[30%] xl:w-[21%] w-full md bg-white border border-gray-100 px-5"
       }
     >
       <section className="h-[5%] pt-5">

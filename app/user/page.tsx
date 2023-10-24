@@ -11,20 +11,21 @@ import Filter from "./module/filter";
 const User = () => {
   const { useUserList } = useUserModule();
   const { onClose, isOpen, onOpen } = useDisclosure();
-  const { data, isFetching, params, handePage, setParams, handlePageSize } =
+  const { data, handeFilter, params, handleClear, handePage, setParams, handlePageSize } =
     useUserList();
   return (
     <>
       <Drawer
         isOpen={isOpen}
-        onClear={() => console.log("first")}
-        onSubmit={() => console.log("first")}
+        onClear={handleClear}
+        onSubmit={handeFilter}
         onClose={onClose}
         title="Filter User"
       >
         <Filter params={params} setParams={setParams} />
       </Drawer>
       <section className="container px-4 mx-auto">
+        {/* {JSON.stringify(params)} */}
         <div className="grid grid-cols-1 gap-5 py-5">
           <Button
             title="Filter"
