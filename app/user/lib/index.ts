@@ -1,7 +1,7 @@
 import { axiosClient } from "@/lib/axiosClient";
 import { UserListFilter, UserListResponse } from "../interface";
 import { useQuery } from "@tanstack/react-query";
-import { ChangeEvent, useState } from "react";
+import { usePagination } from "@/hook/usePagination";
 
 const useUserModule = () => {
   const defaultParam = {
@@ -24,46 +24,21 @@ const useUserModule = () => {
   };
 
   const useUserList = () => {
-    let [params, setParams] = useState<UserListFilter>(defaultParam);
-    let [filter, setFilterParams] = useState<UserListFilter>(defaultParam);
+    const {
+      params,
+      setParams,
+      handeFilter,
+      handleClear,
+      handlePageSize,
+      handlePage,
+      filterParams,
+    } = usePagination(defaultParam);
 
-    const handlePageSize = (e: ChangeEvent<any>) => {
-      setParams((params) => ({ ...params, pageSize: e.target.value, page: 1 }));
-      setFilterParams((params) => ({
-        ...params,
-        pageSize: e.target.value,
-        page: 1,
-      }));
-    };
-
-    const handeFilter = () => {
-      setFilterParams(() => {
-        return {
-          ...params,
-          page: 1,
-        };
-      });
-      setParams((prevParams) => {
-        return {
-          ...prevParams,
-          page: 1,
-        };
-      });
-    };
-
-    const handleClear = () => {
-      setFilterParams(defaultParam);
-      setParams(defaultParam);
-    };
-
-    const handePage = (page: number) => {
-      setParams((params) => ({ ...params, page: page }));
-      setFilterParams((params) => ({ ...params, page: page }));
-    };
     const { data, isFetching, isLoading } = useQuery(
-      ["user/list", [filter]],
-      () => getUserList(filter),
+      ["user/list", [filterParams]],
+      () => getUserList(filterParams),
       {
+        keepPreviousData: true,
         select: (response) => response,
       }
     );
@@ -72,11 +47,12 @@ const useUserModule = () => {
       isFetching,
       isLoading,
       params,
-      handeFilter,
-      handePage,
-      handlePageSize,
       setParams,
-      handleClear
+      handeFilter,
+      handleClear,
+      handlePageSize,
+      handlePage,
+      filterParams,
     };
   };
 

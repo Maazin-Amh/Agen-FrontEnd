@@ -11,7 +11,7 @@ import Filter from "./module/filter";
 const User = () => {
   const { useUserList } = useUserModule();
   const { onClose, isOpen, onOpen } = useDisclosure();
-  const { data, handeFilter, params, handleClear, handePage, setParams, handlePageSize } =
+  const { data, handeFilter, params, handleClear, handlePage, setParams, handlePageSize } =
     useUserList();
   return (
     <>
@@ -120,7 +120,7 @@ const User = () => {
           page={params.page}
           pageSize={params.pageSize}
           handlePageSize={handlePageSize}
-          handlePage={handePage}
+          handlePage={handlePage}
           pagination={data?.pagination}
         />
       </section>
