@@ -1,7 +1,6 @@
 "use client";
 import { ReactNode } from "react";
 
-
 interface TableProps {
   children: ReactNode;
   isFetching?: boolean;
@@ -15,25 +14,20 @@ export const Table: React.FC<TableProps> = ({
   isError = false,
   children,
 }) => {
-
-
   return (
     <>
       {" "}
-      <table className="w-full  divide-y divide-gray-200 ">{children}</table>
-
+      <table className="divide-y border border-gray-100 w-full">{children}</table>
       {isError && (
-        <div className='flex items-center justify-center w-full h-32'>
-          <div className='text-lg text-gray-500'>Ada kesalahan</div>
+        <div className="flex items-center justify-center w-full h-32">
+          <div className="text-lg text-gray-500">Ada kesalahan</div>
         </div>
       )}
-      {isEmpty &&  !isFetching && !isError ? (
-        <div className='flex items-center justify-center w-full h-32'>
-          <div className='text-lg text-gray-500'>Data tidak ditemukan</div>
+      {isEmpty && !isFetching && !isError ? (
+        <div className="flex items-center justify-center w-full h-32">
+          <div className="text-lg text-gray-500">Data tidak ditemukan</div>
         </div>
       ) : null}
-
-
     </>
   );
 };
@@ -43,7 +37,7 @@ interface TheadProps {
 }
 
 export const Thead: React.FC<TheadProps> = ({ children }) => {
-  return <thead className="bg-gray-50 ">{children}</thead>;
+  return <thead className="bg-[#fdfdfd] ">{children}</thead>;
 };
 
 interface TbodyProps {
@@ -51,7 +45,7 @@ interface TbodyProps {
 }
 
 export const Tbody: React.FC<TbodyProps> = ({ children }) => {
-  return <tbody className="bg-white ">{children}</tbody>;
+  return <tbody className="bg-[#fefefe]">{children}</tbody>;
 };
 
 interface TrProps {
@@ -59,7 +53,7 @@ interface TrProps {
 }
 
 export const Tr: React.FC<TrProps> = ({ children }) => {
-  return <tr>{children}</tr>;
+  return <tr className="border-b">{children}</tr>;
 };
 
 interface ThProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
@@ -69,7 +63,7 @@ interface ThProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
 export const Th: React.FC<ThProps> = ({ children, ...props }) => {
   return (
     <th
-      className="px-4 py-2 text-lg text-left bg-gray-100   font-medium text-gray-700 "
+      className="px-4 py-2 text-base  border-r text-start bg-[#fefefe] font-normal text-[#aeaeaf]"
       {...props}
     >
       {children}
@@ -84,7 +78,7 @@ interface TdProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
 export const Td: React.FC<TdProps> = ({ children, ...props }) => {
   return (
     <td
-      className="px-4  border-b-2 py-2 text-sm font-medium text-gray-700 "
+      className="px-4 py-4 text-sm font-medium text-slate-900"
       {...props}
     >
       {children}

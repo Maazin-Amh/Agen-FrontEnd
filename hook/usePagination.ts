@@ -9,7 +9,6 @@ export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
   let [params, setParams] = useState<T>(defaultParams);
   let [filterParams, setFilterParams] = useState<T>(defaultParams);
 
-
   const handleClear = () => {
     setFilterParams(defaultParams);
     setParams(defaultParams);
@@ -24,21 +23,30 @@ export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
     }));
   };
 
-  const handeFilter = () => {
-    setFilterParams(() => {
-      return {
-        ...params,
-        page: 1,
-      };
-    });
+  const handeFilter = (e?:any) => {
     setParams((prevParams) => {
       return {
         ...prevParams,
         page: 1,
       };
     });
+    if (e === undefined) {
+      setFilterParams(() => {
+        return {
+          ...params,
+          page: 1,
+        };
+      });
+    } else {
+      setFilterParams(() => {
+        return {
+          ...params,
+          nama: e.target.value,
+          page: 1,
+        };
+      });
+    }
   };
-
 
   const handlePage = (page: number) => {
     setParams((params) => ({ ...params, page: page }));

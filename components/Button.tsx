@@ -2,7 +2,7 @@ import clsx from "clsx";
 import ClipLoader from "react-spinners/ClipLoader";
 
 type Variant = "solid" | "outline";
-type ColorSchema = "blue" | "red" | "green";
+type ColorSchema = "blue" | "red" | "green" | "dark";
 
 interface ButtonProps {
   title: string;
@@ -30,11 +30,13 @@ const Button: React.FC<
     <button
       {...props}
       disabled={isDisabled}
-      className={clsx(` rounded border w-24  capitalize`, {
+      className={clsx(` rounded w-24  capitalize`, {
         "bg-blue-500 text-white": colorSchema === "blue" && variant === "solid",
         "border-blue-500 text-blue-500":
           colorSchema === "blue" && variant === "outline",
         "bg-red-500 text-white": colorSchema === "red" && variant === "solid",
+        "bg-slate-900 text-white":
+          colorSchema === "dark" && variant === "solid",
         "border-red-500 text-red-500 ":
           colorSchema === "red" && variant === "outline",
         "bg-green-500 text-white":
@@ -43,8 +45,11 @@ const Button: React.FC<
           colorSchema === "green" && variant === "outline",
         "opacity-25": isDisabled,
         "w-24": width === "md",
+        "w-full py-[0.45rem] rounded-full": width === "lg",
         "w-full": width === "full",
         "h-8": width === "sm",
+        "w-24 py-1 rounded-full": width === "gap",
+        "w-32 py-2 rounded-lg": width === "filter",
         "h-12": width === "md",
       })}
     >

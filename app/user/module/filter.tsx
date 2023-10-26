@@ -1,34 +1,44 @@
 import Label from "@/components/Label";
 import InputText from "@/components/InputText";
 import { UserListFilter } from "../interface";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import Select from "@/components/Select";
-import { set } from "date-fns";
 
 type FilterProps = {
   params: UserListFilter;
   setParams: Dispatch<SetStateAction<any>>;
 };
+
 const option = [
   {
-    value: 2020,
-    label: "2020",
+    value: 15,
+    label: "15",
   },
   {
-    value: 2021,
-    label: "2021",
+    value: 16,
+    label: "16",
   },
   {
-    value: 2022,
-    label: "2022",
+    value: 17,
+    label: "17",
   },
   {
-    value: 2023,
-    label: "2023",
+    value: 18,
+    label: "18",
+  },
+  {
+    value: 19,
+    label: "19",
+  },
+  {
+    value: 20,
+    label: "20",
   },
 ];
 
 const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
+  let [eror, setError] = useState<any>();
+
   const handleChange = (e: ChangeEvent<any>) => {
     setParams((params: UserListFilter) => {
       return {
@@ -39,7 +49,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
 
     if (e.target.name === "to_year") {
       if (Number(params.to_year) > e.target.value) {
-        alert(
+        setError(
           `tahun yang anda masukan harus lebih besar dari ${params.from_year}`
         );
       }
@@ -61,7 +71,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
     <section>
       <section className="space-y-3 pt-5">
         <section>
-          <Label title="Nama" htmlFor="Nama" />
+          <Label title="nama" htmlFor="Nama" />
           <InputText
             onChange={handleChange}
             name="nama"
@@ -70,7 +80,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
           />
         </section>
         <section>
-          <Label title="Email" htmlFor="Email" />
+          <Label title="email" htmlFor="Email" />
           <InputText
             onChange={handleChange}
             name="email"
@@ -79,7 +89,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
           />
         </section>
         <section>
-          <Label title="dari" htmlFor="from_year" />
+          <Label title="dari umur" htmlFor="from_year" />
           <Select
             onChange={handleChange}
             options={option}
@@ -89,7 +99,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
           />
         </section>
         <section>
-          <Label title="ke" htmlFor="to_year" />
+          <Label title="ke umur" htmlFor="to_year" />
           <Select
             onChange={handleChange}
             options={option}
@@ -98,6 +108,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
             id="to_year"
           />
         </section>
+        {eror && <p className="text-red-500 font-light text-xs">{eror}</p>}
       </section>
     </section>
   );

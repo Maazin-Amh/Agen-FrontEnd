@@ -3,11 +3,11 @@ import Select from "./Select";
 import clsx from "clsx";
 
 interface PaginationProps {
-  handlePageSize: (e: ChangeEvent<any>) => void;
+  handlePageSize?: (e: ChangeEvent<any>) => void;
   handlePage: (page : number) => void;
 
-  page: number | string ;
-  pageSize: number | string;
+  page?: number | string ;
+  pageSize?: number | string;
 
   pagination:
     | {
@@ -84,11 +84,12 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="flex items-center justify-between mt-6">
-      <div>
+      <div className="flex gap-2 items-center">
+        <p className="text-xs">showing {pageSize}</p>
         <select
           value={pageSize}
           onChange={handlePageSize}
-          className="px-2 py-1 text-sm text-blue-500 rounded-md  border"
+          className="px-2 py-1 text-sm text-slate-900 outline-none rounded-md  border"
         >
           <option value={1}>1</option>
           <option value={5}>5</option>
@@ -97,7 +98,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           <option value={50}>50</option>
           <option value={100}>100</option>
         </select>
-        <p></p>
+        <p className="text-xs">of {pagination?.total} result</p>
       </div>
 
       <div className="items-center hidden md:flex gap-x-3">
@@ -108,10 +109,10 @@ export const Pagination: React.FC<PaginationProps> = ({
               handlePage(pageItem)
             }}
             className={clsx(
-              `px-4 py-2 rounded-full text-sm `,
+              ` w-10 h-10 rounded-full text-sm `,
               {
-                "text-blue-500   bg-blue-100/60": page === pageItem,
-                "text-blue-500  border  border-blue-100/60": page !== pageItem,
+                "text-white  bg-slate-900": page === pageItem,
+                "text-slate-900  border  border-slate-900/60": page !== pageItem,
               },
               {}
             )}
