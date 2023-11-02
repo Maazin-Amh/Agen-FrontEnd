@@ -17,7 +17,7 @@ export const Table: React.FC<TableProps> = ({
   return (
     <>
       {" "}
-      <table className="divide-y border border-gray-100 w-full">{children}</table>
+      <table className="divide-y border ds-wst border-gray-100 w-full">{children}</table>
       {isError && (
         <div className="flex items-center justify-center w-full h-32">
           <div className="text-lg text-gray-500">Ada kesalahan</div>
@@ -63,7 +63,7 @@ interface ThProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
 export const Th: React.FC<ThProps> = ({ children, ...props }) => {
   return (
     <th
-      className="px-4 py-2 text-base  border-r text-start bg-[#fefefe] font-normal text-[#aeaeaf]"
+      className="px-4 py-2 text-base border-r text-start bg-[#fefefe] font-normal text-[#aeaeaf]"
       {...props}
     >
       {children}

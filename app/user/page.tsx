@@ -8,9 +8,11 @@ import { useDisclosure } from "@/hook";
 import { Drawer } from "@/components/Drawer";
 import Filter from "./module/filter";
 import Search from "./module/search";
+import { useRouter } from "next/navigation";
 
 const User = () => {
   const { useUserList } = useUserModule();
+  const router = useRouter();
   const { onClose, isOpen, onOpen } = useDisclosure();
   const {
     data,
@@ -40,7 +42,7 @@ const User = () => {
             <Button
               title="Add +"
               width="filter"
-              onClick={() => console.log("add jalan")}
+              onClick={() => router.push("user/add")}
               colorSchema="red"
             />
             <Button
@@ -52,11 +54,7 @@ const User = () => {
           </div>
           <Search onchange={handeFilter} />
         </div>
-        {isFetching && (
-          <span className="w-full h-screen absolute flex top-0 left-0 right-0 bottom-0 bg-white/5 backdrop-blur-2xl text-black items-center justify-center">
-            ....loading
-          </span>
-        )}
+
         <Table>
           <Thead>
             <Tr>

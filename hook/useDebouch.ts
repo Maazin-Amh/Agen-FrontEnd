@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 
-const useDebouch = (keyword: string, delay: number) => {
-  let [debouncheValue, setDebouncheValue] = useState("");
+export default function useDebounce(value: string, delay: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncheValue(keyword);
+      setDebouncedValue(value);
     }, delay);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [keyword]);
+  }, [value, delay]);
 
-  return {debouncheValue}
-};
-
-export default useDebouch;
+  return {debouncedValue}
+}

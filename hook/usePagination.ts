@@ -30,7 +30,8 @@ export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
         page: 1,
       };
     });
-    if (e === undefined) {
+
+    if (e == undefined) {
       setFilterParams(() => {
         return {
           ...params,

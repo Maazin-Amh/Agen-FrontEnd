@@ -1,8 +1,10 @@
-import React from "react";
+import useDebounce from "@/hook/useDebouch";
+import React, { useState } from "react";
 
 interface SearchProps {
     onchange: () => void;
 }
+
 
 const Search:React.FC<SearchProps> = ({onchange}) => {
   return (
@@ -13,7 +15,7 @@ const Search:React.FC<SearchProps> = ({onchange}) => {
           name="text"
           onChange={onchange}
           className="p-3 pl-10 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500  border"
-          placeholder="Search for Users"
+          placeholder="Search for items"
         />
         <div className="absolute inset-y-0 left-0 flex items-center pl-4">
           <svg

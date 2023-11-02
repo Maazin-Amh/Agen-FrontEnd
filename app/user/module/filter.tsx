@@ -47,16 +47,16 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
       };
     });
 
-    if (e.target.name === "to_year") {
-      if (Number(params.to_year) > e.target.value) {
+    if (e.target.name === "to_umur") {
+      if (Number(params.to_umur) > e.target.value) {
         setError(
-          `tahun yang anda masukan harus lebih besar dari ${params.from_year}`
+          `tahun yang anda masukan harus lebih besar dari ${params.from_umur}`
         );
       }
     }
 
-    if (e.target.name === "from_year") {
-      if (e.target.value > Number(params.to_year)) {
+    if (e.target.name === "from_umur") {
+      if (e.target.value > Number(params.to_umur)) {
         setParams((prevParams: UserListFilter) => {
           return {
             ...prevParams,
@@ -89,21 +89,21 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
           />
         </section>
         <section>
-          <Label title="dari umur" htmlFor="from_year" />
+          <Label title="dari umur" htmlFor="from_umur" />
           <Select
             onChange={handleChange}
             options={option}
-            value={params.from_year}
+            value={params.from_umur}
             name="from_year"
             id="from_year"
           />
         </section>
         <section>
-          <Label title="ke umur" htmlFor="to_year" />
+          <Label title="ke umur" htmlFor="to_umur" />
           <Select
             onChange={handleChange}
             options={option}
-            value={params.to_year}
+            value={params.to_umur}
             name="to_year"
             id="to_year"
           />

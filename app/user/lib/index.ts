@@ -1,58 +1,54 @@
+import { useQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axiosClient";
 import { UserListFilter, UserListResponse } from "../interface";
-import { useQuery } from "@tanstack/react-query";
 import { usePagination } from "@/hook/usePagination";
 
 const useUserModule = () => {
-  const defaultParam = {
-    page: 1,
-    pageSize: 10,
+  const defaultParams : UserListFilter = {
     nama: "",
     email: "",
-    from_year: "",
-    to_year: "",
+    from_umur: "",
+    to_umur: "",
+    page: 1,
+    pageSize: 10,
   };
-
   const getUserList = async (
     params: UserListFilter
   ): Promise<UserListResponse> => {
-    return axiosClient
-      .get("/user/list", {
-        params: params,
-      })
-      .then((res) => res.data);
+    return axiosClient.get("/user/list", { params }).then((res) => res.data);
   };
-
   const useUserList = () => {
-    const {
+    const{
       params,
       setParams,
       handeFilter,
       handleClear,
       handlePageSize,
       handlePage,
-      filterParams,
-    } = usePagination(defaultParam);
+      filterParams
+    } = usePagination(defaultParams)
 
-    const { data, isFetching, isLoading } = useQuery(
-      ["user/list", [filterParams]],
+    const { data, isFetching, isLoading, isError } = useQuery(
+      ["/user/list", [filterParams]],
       () => getUserList(filterParams),
       {
         keepPreviousData: true,
+
         select: (response) => response,
       }
     );
+
     return {
       data,
       isFetching,
       isLoading,
+      isError,
       params,
       setParams,
-      handeFilter,
-      handleClear,
       handlePageSize,
       handlePage,
-      filterParams,
+      handeFilter,
+      handleClear,
     };
   };
 
