@@ -94,8 +94,8 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
             onChange={handleChange}
             options={option}
             value={params.from_umur}
-            name="from_year"
-            id="from_year"
+            name="from_umur"
+            id="from_umur"
           />
         </section>
         <section>
@@ -104,8 +104,8 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
             onChange={handleChange}
             options={option}
             value={params.to_umur}
-            name="to_year"
-            id="to_year"
+            name="to_umur"
+            id="to_umur"
           />
         </section>
         {eror && <p className="text-red-500 font-light text-xs">{eror}</p>}

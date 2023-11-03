@@ -46,6 +46,7 @@ const Button: React.FC<
         "opacity-25": isDisabled,
         "w-24": width === "md",
         "w-full py-[0.45rem] rounded-full": width === "lg",
+        "w-full py-[0.45rem] rounded-lg": width === "lg1",
         "w-full": width === "full",
         "h-8": width === "sm",
         "w-24 py-1 rounded-full": width === "gap",

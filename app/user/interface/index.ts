@@ -16,8 +16,8 @@ export interface UserListResponse extends BaseResponsePagination {
 }
 
 export interface UserListFilter extends Partial<User> {
-  from_umur?: string;
-  to_umur?: string;
+  from_umur?: any;
+  to_umur?: any;
   page: number;
   pageSize: number;
 }

@@ -9,6 +9,7 @@ import { Drawer } from "@/components/Drawer";
 import Filter from "./module/filter";
 import Search from "./module/search";
 import { useRouter } from "next/navigation";
+import { set } from "date-fns";
 
 const User = () => {
   const { useUserList } = useUserModule();
@@ -25,6 +26,7 @@ const User = () => {
     handlePageSize,
   } = useUserList();
 
+  console.log('first', handeFilter)
   return (
     <>
       <Drawer

@@ -66,8 +66,8 @@ const CreateUser = () => {
   } = formik;
 
   return (
-    <section className="flex items-center  justify-center w-full h-full">
-      <section className="w-1/2">
+    <section className="flex items-center fixed justify-center w-full h-full">
+      <section className="w-1/3">
         <Link href={"/user"}>
           <span className="flex items-center">
             {" "}
@@ -140,7 +140,7 @@ const CreateUser = () => {
               />
             </section>
             <section>
-              <Button height="md" title="Simpan" colorSchema="dark" />
+              <Button width="lg1" title="Simpan" colorSchema="dark" />
             </section>
           </Form>
         </FormikProvider>

@@ -7,8 +7,8 @@ const useUserModule = () => {
   const defaultParams : UserListFilter = {
     nama: "",
     email: "",
-    from_umur: "",
-    to_umur: "",
+    from_umur: undefined,
+    to_umur: undefined,
     page: 1,
     pageSize: 10,
   };
