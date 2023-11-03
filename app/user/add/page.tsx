@@ -112,6 +112,7 @@ const CreateUser = () => {
                 options={option}
                 isError={!!errors.umur}
                 messageError={errors.umur}
+                onChange={handleChange}
               />
             </section>
             <section>

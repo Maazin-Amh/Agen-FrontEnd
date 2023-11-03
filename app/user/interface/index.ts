@@ -4,7 +4,7 @@ interface User {
   id: number;
   nama: string;
   email: string;
-  umur: number | undefined;
+  umur: string | number | undefined;
   tanggal_lahir: string;
   status: string;
   created_at: string;
