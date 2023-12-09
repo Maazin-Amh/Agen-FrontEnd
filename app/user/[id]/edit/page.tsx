@@ -5,69 +5,30 @@ import Label from "@/components/Label";
 import Select from "@/components/Select";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as yup from "yup";
-import { UserCreatePayload } from "../interface";
+import useUserModule from "../../lib";
 import Link from "next/link";
-import { ArrowLongLeftIcon } from "@heroicons/react/20/solid";
-import useUserModule from "../lib";
+import { option } from "../../add/page";
+import { userCreateSchema } from "../../add/page";
+import { UserUpdatePayload } from "../../interface";
 
-export const userCreateSchema = yup.object().shape({
-  nama: yup
-    .string()
-    .nullable()
-    .default("")
-    .required("isi nama kalian")
-    .min(3, "Minimal 3 huruf")
-    .max(30, "Maximal 30 huruf"),
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .nullable()
-    .default("")
-    .required("isi email kailan"),
-  umur: yup.number().nullable().default(undefined).required("isi umur kailan"),
-  tanggal_lahir: yup.string().nullable().default("").required("isi tangal lahir kailan"),
-  status: yup.string().nullable().default("").required("isi status kailan saat ini"),
-});
-
-
-export const option = [
-  {
-    value: 15,
-    label: "15",
-  },
-  {
-    value: 16,
-    label: "16",
-  },
-  {
-    value: 17,
-    label: "17",
-  },
-  {
-    value: 18,
-    label: "18",
-  },
-  {
-    value: 19,
-    label: "19",
-  },
-  {
-    value: 20,
-    label: "20",
-  },
-];
-
-const CreateUser = () => {
-  const { useCreateUser } = useUserModule();
-  const { mutate, isLoading } = useCreateUser();
-  const formik = useFormik<UserCreatePayload>({
-    initialValues: userCreateSchema.getDefault(),
+const UpdateUser = ({ params }: { params: { id: string } }) => {
+  const { useDetailUser, useUpdateUser } = useUserModule();
+  const { mutate, isLoading } = useUpdateUser(+params.id);
+  const { data, isFetching } = useDetailUser(params.id);
+  const formik = useFormik<UserUpdatePayload>({
+    initialValues: {
+      nama: data?.nama || "",
+      email: data?.email || "",
+      umur: data?.umur || "",
+      tanggal_lahir: data?.tanggal_lahir || "",
+      status: data?.status || "",
+      id: data?.id || 0,
+    },
     validationSchema: userCreateSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       mutate(values, {
         onSuccess: () => {
-          resetForm();
           window.location.href = "/user";
         },
       });
@@ -85,11 +46,29 @@ const CreateUser = () => {
     setValues,
   } = formik;
 
+  if (isFetching) {
+    return (
+      <>
+        <div className="bg-white/20 backdrop-blur-xl flex-col w-full h-screen flex justify-center items-center">
+          <picture>
+            <img src="/loading.png" alt="" className="w-72 h-72" />
+          </picture>
+          <span className="font-bold text-xl">Tunggu dulu ya....</span>
+        </div>
+      </>
+    );
+  }
   return (
-    <section className="flex items-center justify-center w-full h-screen absolute top-[5vh]">
+    <section className="flex items-center absolute justify-center w-full h-full">
       <section className="w-1/3">
-        <h2 className="text-xl font-bold text-gray-500">Tambah User</h2>
-        {/* value : {JSON.stringify(values)} */}
+        {/* <Link href={"/user"}>
+          <span className="flex items-center">
+            {" "}
+            <ArrowLongLeftIcon className="h-5 w-5 mr-2" />
+            Kembali
+          </span>
+        </Link> */}
+        <h2 className="text-xl font-bold text-gray-500">Update User</h2>
         <FormikProvider value={formik}>
           <Form onSubmit={handleSubmit} className="space-y-5">
             <section>
@@ -141,12 +120,12 @@ const CreateUser = () => {
               <Label htmlFor="tanggal_lahir" title="tanggal lahir" />
               <InputText
                 onChange={handleChange}
-                onBlur={formik.handleBlur}
+                onBlur={handleBlur}
                 value={values.tanggal_lahir}
                 placeholder="tanggal lahir"
                 id="tanggal_lahir"
-                name="tanggal_lahir"
                 type="date"
+                name="tanggal_lahir"
                 isError={!!errors.tanggal_lahir}
                 messageError={errors.tanggal_lahir}
               />
@@ -154,7 +133,7 @@ const CreateUser = () => {
             <section>
               <Label htmlFor="status" title="status" />
               <InputText
-                onBlur={formik.handleBlur}
+                onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.status}
                 placeholder="status"
@@ -165,7 +144,13 @@ const CreateUser = () => {
               />
             </section>
             <section className="flex gap-3 flex-col">
-              <Button width="lg1" title="Simpan" colorSchema="dark" />
+              <Button
+                width="lg1"
+                title="Update"
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                colorSchema="dark"
+              />
               <Link href={"/user"}>
                 <Button
                   width="lg1"
@@ -182,4 +167,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default UpdateUser;

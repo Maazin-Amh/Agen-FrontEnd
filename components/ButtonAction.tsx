@@ -15,7 +15,7 @@ export const DeleteButton: React.FC<
       type="button"
       onClick={onClick}
       {...props}
-      className="text-red-500  h-6 w-6 "
+      className="text-red-500  h-6 w-6 mr-1 disabled:text-red-200"
     >
       {isLoading ? <Spinner /> : <TrashIcon />}
     </button>
@@ -31,7 +31,7 @@ export const EditButton: React.FC<
       type="button"
       onClick={onClick}
       {...props}
-      className="text-blue-500 h-6 w-6"
+      className="text-blue-500 h-6 w-6 -mr-3"
     >
       {isLoading ? <Spinner /> : <PencilSquareIcon />}
     </button>

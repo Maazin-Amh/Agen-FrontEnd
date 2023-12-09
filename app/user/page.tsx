@@ -9,11 +9,22 @@ import { Drawer } from "@/components/Drawer";
 import Filter from "./module/filter";
 import Search from "./module/search";
 import { useRouter } from "next/navigation";
-import { set } from "date-fns";
+import { DeleteButton, EditButton } from "@/components/ButtonAction";
+import { useConfirmDelete } from "@/hook/useConfirmDelete";
+import { useConfirmDeleteBulk } from "@/hook/useConfrimBulkDelete";
 
 const User = () => {
-  const { useUserList } = useUserModule();
+  const { useUserList, useDeleteUser, useDeleteBulkUser } = useUserModule();
+  const { mutate, isLoading } = useDeleteUser();
+  const { mutate: mutateDeleteBulk, isLoading: isLoadingDeleteBulk } =
+    useDeleteBulkUser();
   const router = useRouter();
+  const handleDelete = useConfirmDelete({
+    onSubmit: (id) => {
+      mutate(id);
+    },
+  });
+
   const { onClose, isOpen, onOpen } = useDisclosure();
   const {
     data,
@@ -26,7 +37,21 @@ const User = () => {
     handlePageSize,
   } = useUserList();
 
-  console.log('first', handeFilter)
+  const { handleDeleteBulk, deletePayload, setDeletePayload, checked } =
+  useConfirmDeleteBulk({
+    data: data,
+    onSubmit: (payload) => {
+      mutateDeleteBulk(
+        { delete: payload },
+        {
+          onSuccess: () => {
+            setDeletePayload([]);
+          },
+        }
+      );
+    },
+  });
+
   return (
     <>
       <Drawer
@@ -45,9 +70,27 @@ const User = () => {
               title="Add +"
               width="filter"
               onClick={() => router.push("user/add")}
-              colorSchema="red"
+              colorSchema="teal"
             />
             <Button
+              onClick={() => {
+                router.push("/user/tambah-bulk");
+              }}
+              width="filter"
+              colorSchema="green"
+              title="tambah bulk"
+            />
+            <Button
+              width="filter"
+              onClick={() => {
+                handleDeleteBulk(deletePayload);
+              }}
+              isLoading={isLoadingDeleteBulk}
+              colorSchema="red"
+              isDisabled={deletePayload.length === 0}
+              title="Hapus Bulk"
+            />
+             <Button
               title="Filter"
               width="filter"
               onClick={onOpen}
@@ -56,15 +99,35 @@ const User = () => {
           </div>
           <Search onchange={handeFilter} />
         </div>
-
         <Table>
           <Thead>
             <Tr>
               <Th scope="col">
-                <div className="flex justify-center items-center ">
+                <div className="flex items-center gap-x-3">
                   <input
+                    checked={checked.isAllCheced}
+                    onChange={() => {
+                      if (checked.isAllCheced) {
+                        setDeletePayload([]);
+                      } else {
+                        setDeletePayload((state) => {
+                          if (!data) {
+                            return [];
+                          }
+
+                          const selected: number[] = Array.from(
+                            new Set([
+                              ...state,
+                              ...data?.data?.map((n) => Number(n.id)),
+                            ])
+                          );
+
+                          return [...selected];
+                        });
+                      }
+                    }}
                     type="checkbox"
-                    className="border-gray-300 accent-slate-900  w-4 h-4"
+                    className="accent-slate-950 w-4 h-4"
                   />
                 </div>
               </Th>
@@ -75,22 +138,28 @@ const User = () => {
               <Th scope="col">Status</Th>
               <Th scope="col">Create</Th>
               <Th scope="col">Update</Th>
+              <Th scope="col" className="text-center">Edit</Th>
             </Tr>
           </Thead>
           <Tbody>
             {data?.data.map((item, index) => (
               <Tr key={index}>
                 <Td>
-                  <span>
-                    {
-                      <div className="flex w-full justify-center items-center ">
-                        <input
-                          type="checkbox"
-                          className="border-gray-300 accent-slate-900 w-4 h-4"
-                        />
-                      </div>
-                    }
-                  </span>
+                  <input
+                    checked={deletePayload.includes(item.id || 0)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setDeletePayload((state) => [...state, item.id || 0]);
+                      } else {
+                        const filtered = deletePayload.filter(
+                          (n) => n !== item.id
+                        );
+                        setDeletePayload(filtered);
+                      }
+                    }}
+                    type="checkbox"
+                    className="accent-slate-950 w-4 h-4"
+                  />
                 </Td>
                 <Td>
                   <span>{item.nama}</span>
@@ -102,7 +171,7 @@ const User = () => {
                   <span>{item.umur}</span>
                 </Td>
                 <Td>
-                  <span>{item.tanggal_lahir}</span>
+                  <span>{dateUtil.formatDateInd(item.tanggal_lahir)}</span>
                 </Td>
                 <Td>
                   <span>{item.status}</span>
@@ -113,9 +182,28 @@ const User = () => {
                 <Td>
                   <span>{dateUtil.formatDateIndLong(item.updated_at)}</span>
                 </Td>
+                <Td>
+                  <DeleteButton
+                    isLoading={isLoading}
+                    onClick={() => {
+                      handleDelete(item.id || 0);
+                    }}
+                  />
+                  <EditButton
+                    onClick={() => {
+                      router.push(`user/${item.id}/edit`);
+                    }}
+                  />
+                </Td>
               </Tr>
             ))}
           </Tbody>
+          {/* <DeleteButton
+                  isLoading= {isLoading}
+                    onClick={() => {
+                      handleDelete(item.id || 0)
+                    }}
+                  /> */}
         </Table>
         <Pagination
           page={params.page}

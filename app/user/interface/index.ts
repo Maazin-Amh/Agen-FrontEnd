@@ -24,3 +24,25 @@ export interface UserListFilter extends Partial<User> {
 
 export interface UserCreatePayload
   extends Pick<User, "nama" | "email" | "umur" | "tanggal_lahir" | "status"> {}
+
+export interface UserCreateResponse {
+  status: string;
+  message: string;
+  data?: User;
+}
+
+export interface UserDetailResponse extends User {}
+export interface UserUpdateResponse extends UserCreateResponse {}
+export interface UserUpdatePayload
+  extends Pick<
+    User,
+    "id" | "nama" | "email" | "umur" | "tanggal_lahir" | "status"
+  > {};
+
+export interface UserCreateArrayPayload {
+  data: UserCreatePayload[];
+}
+
+export interface UserDeleteArrayPayload {
+  delete: number[];
+}
