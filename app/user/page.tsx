@@ -38,19 +38,19 @@ const User = () => {
   } = useUserList();
 
   const { handleDeleteBulk, deletePayload, setDeletePayload, checked } =
-  useConfirmDeleteBulk({
-    data: data,
-    onSubmit: (payload) => {
-      mutateDeleteBulk(
-        { delete: payload },
-        {
-          onSuccess: () => {
-            setDeletePayload([]);
-          },
-        }
-      );
-    },
-  });
+    useConfirmDeleteBulk({
+      data: data,
+      onSubmit: (payload) => {
+        mutateDeleteBulk(
+          { delete: payload },
+          {
+            onSuccess: () => {
+              setDeletePayload([]);
+            },
+          }
+        );
+      },
+    });
 
   return (
     <>
@@ -90,7 +90,7 @@ const User = () => {
               isDisabled={deletePayload.length === 0}
               title="Hapus Bulk"
             />
-             <Button
+            <Button
               title="Filter"
               width="filter"
               onClick={onOpen}
@@ -138,9 +138,12 @@ const User = () => {
               <Th scope="col">Status</Th>
               <Th scope="col">Create</Th>
               <Th scope="col">Update</Th>
-              <Th scope="col" className="text-center">Edit</Th>
+              <Th scope="col" className="text-center">
+                Edit
+              </Th>
             </Tr>
           </Thead>
+
           <Tbody>
             {data?.data.map((item, index) => (
               <Tr key={index}>
