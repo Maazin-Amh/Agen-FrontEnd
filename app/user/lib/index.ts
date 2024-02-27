@@ -19,9 +19,11 @@ import {
 } from "../interface";
 import { usePagination } from "@/hook/usePagination";
 import Swal from "sweetalert2";
+import { useToast } from "@/hook/useToast";
 
 const useUserModule = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+  const { toastError, toastSuccess, toastWarning } = useToast();
   const defaultParams: UserListFilter = {
     nama: "",
     email: "",
@@ -47,23 +49,11 @@ const useUserModule = () => {
       (payload: UserCreatePayload) => createUser(payload),
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastSuccess(response.message);
         },
         onError: (gagal) => {
           console.log("error", gagal);
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "ada salah",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastError();
         },
       }
     );
@@ -84,13 +74,7 @@ const useUserModule = () => {
       (payload: UserUpdatePayload) => updateUser(payload, id),
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastSuccess(response.message);
         },
         onError: (gagal) => {
           console.log("error", gagal);
@@ -165,13 +149,7 @@ const useUserModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastSuccess(response.data.message);
           queryClient.invalidateQueries(["/user/list"]);
         },
         onError: (error: any) => {
@@ -206,13 +184,7 @@ const useUserModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastSuccess(response.data.message);
         },
         onError: (error) => {
           Swal.fire({
@@ -235,14 +207,7 @@ const useUserModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
-
+          toastSuccess(response.data.message);
           queryClient.invalidateQueries(["/user/list"]);
         },
         onError: (error) => {
