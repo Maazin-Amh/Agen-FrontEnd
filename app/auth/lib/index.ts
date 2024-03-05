@@ -35,6 +35,7 @@ const useAuthModule = () => {
           await signIn("credentials", {
             id: response.data.id,
             name: response.data.nama,
+            role: response.data.role,
             email: response.data.email,
             accessToken: response.data.access_token,
             refreshToken: response.data.refresh_token,

@@ -5,6 +5,7 @@ interface User {
   nama: string;
   email: string;
   password: string;
+  role: string;
   refresh_token: string;
   access_token: string;
 }

@@ -16,7 +16,7 @@ export const lupaPwSchema = yup.object().shape({
     .nullable()
     .default("")
     .email("Gunakan format email")
-    .required("Wajib isi"),
+    .required("tolong isi terlebih dahulu"),
 });
 
 const LupaPw = ({ params }: any) => {
@@ -33,9 +33,9 @@ const LupaPw = ({ params }: any) => {
   const { handleChange, handleSubmit, handleBlur, values, errors } = formik;
 
   return (
-    <section className="m-10">
+    <section className="m-32">
       <div className="flex items-center justify-center w-full">
-        <h1 className="text-3xl text-blue-400">Lupa Password</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Lupa Password</h1>
       </div>
       <FormikProvider value={formik}>
         <Form className="space-y-5" onSubmit={handleSubmit}>
@@ -52,16 +52,16 @@ const LupaPw = ({ params }: any) => {
               messageError={getIn(errors, "email")}
             />
           </section>
-          <section>
+          <section className="flex flex-col gap-3">
             <Button
-              height="lg"
+              width="login"
               title="Send Email"
-              colorSchema="blue"
+              colorSchema="dark"
               isLoading={isLoading}
               isDisabled={isLoading}
             />
             <Link href={"/auth/"}>
-              <Button title="Back" colorSchema="green" />
+              <Button title="Back" colorSchema="blue" width="login" />
             </Link>
           </section>
         </Form>

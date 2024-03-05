@@ -8,7 +8,7 @@ interface ButtonProps {
   title: string;
   isDisabled?: boolean;
   variant?: Variant;
-  colorSchema: ColorSchema;
+  colorSchema?: ColorSchema;
   width?: string;
   height?: string;
   isLoading?: boolean;
@@ -54,6 +54,8 @@ const Button: React.FC<
         "w-24 py-1 rounded-full": width === "gap",
         "w-32 py-2 rounded-lg": width === "filter",
         "h-12": width === "md",
+        "w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border-[1px]":
+          width === "login",
       })}
     >
       {isLoading ? (

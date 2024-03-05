@@ -35,14 +35,14 @@ const LupaPw = ({ params }: { params: { id: string; token: string } }) => {
   const { handleChange, handleSubmit, handleBlur, values, errors } = formik;
 
   return (
-    <section>
+    <section className="m-10">
       <div className="flex items-center justify-center w-full">
-        <h1 className="text-3xl text-blue-400">Reset Password</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Reset Password</h1>
       </div>
       <FormikProvider value={formik}>
         <Form className="space-y-5" onSubmit={handleSubmit}>
           <section>
-            <Label htmlFor="new_password" title="new_password" />
+            <Label htmlFor="new_password" title="New Password" />
             <InputText
               value={values.new_password}
               placeholder="**********"
@@ -57,17 +57,14 @@ const LupaPw = ({ params }: { params: { id: string; token: string } }) => {
               messageError={errors?.new_password}
             />
           </section>
-          <section>
+          <section className="flex flex-col gap-3">
             <Button
-              height="lg"
+              width="login"
               title="Reset Password"
-              colorSchema="blue"
+              colorSchema="red"
               isLoading={isLoading}
               isDisabled={isLoading}
             />
-            <Link href={"/auth/login"}>
-              <Button title="Back" colorSchema="green" />
-            </Link>
           </section>
         </Form>
       </FormikProvider>

@@ -47,7 +47,7 @@ const Register = () => {
 
   return (
     <section className="m-10">
-      <h1>Register</h1>
+      <h1 className="text-2xl font-bold text-gray-800">Register</h1>
       erors : {JSON.stringify(errors)}
       <br />
       values : {JSON.stringify(values)}
@@ -101,6 +101,7 @@ const Register = () => {
             <Button
               title="register"
               colorSchema="blue"
+              width="login"
             />
           </section>
         </Form>
