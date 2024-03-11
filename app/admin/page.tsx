@@ -19,6 +19,13 @@ const Admin = () => {
       {JSON.stringify(profile)}
       {status}
       <Button
+        title="produk"
+        colorSchema="dark"
+        onClick={() => {
+        router.push("admin/produk")
+        }}
+      />
+      <Button
         title="Logout"
         colorSchema="red"
         onClick={() => {

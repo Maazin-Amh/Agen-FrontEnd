@@ -75,7 +75,7 @@ const useAuthModule = () => {
         staleTime: 1000 * 60 * 60,
         refetchInterval: 1000 * 60 * 60,
         refetchOnWindowFocus: false,
-        enabled: !!session == true,
+        enabled : session?.user?.id !== undefined
       }
     );
 

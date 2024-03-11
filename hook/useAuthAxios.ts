@@ -22,7 +22,7 @@ const useAxiosAuth = () => {
     const responseIntercept = axiosClient.interceptors.response.use(
       async (response: any) => response,
       async (error: any) => {
-        toastWarning(error.response.message);
+        // toastWarning(error.response.message);
         // signOut();
         // window.location.replace("/auth/login");
       }
