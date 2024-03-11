@@ -3,19 +3,25 @@ import {
   LoginPayload,
   LoginResponse,
   LupaPasswordPayload,
+  ProfileResponse,
   RegisterPayload,
   RegisterResponse,
   ResetPasswordPayload,
 } from "../interface";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hook/useToast";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import useAxiosAuth from "@/hook/useAuthAxios";
+import { useSession } from "next-auth/react";
 
 const useAuthModule = () => {
   const { toastError, toastSuccess, toastWarning } = useToast();
   const router = useRouter();
+  const axiosAuthClient = useAxiosAuth();
+  const { data: session } = useSession();
+
   const register = async (
     payload: RegisterPayload
   ): Promise<RegisterResponse> => {
@@ -54,6 +60,26 @@ const useAuthModule = () => {
       }
     );
     return { mutate, isLoading };
+  };
+
+  const getProfile = async (): Promise<ProfileResponse> => {
+    return axiosAuthClient.get("/auth/profile").then((res) => res.data);
+  };
+
+  const useProfile = () => {
+    const { data, isLoading, isFetching } = useQuery(
+      ["/auth/profile"],
+      () => getProfile(),
+      {
+        select: (response) => response,
+        staleTime: 1000 * 60 * 60,
+        refetchInterval: 1000 * 60 * 60,
+        refetchOnWindowFocus: false,
+        enabled: !!session == true,
+      }
+    );
+
+    return { data, isFetching, isLoading };
   };
 
   const useRegister = () => {
@@ -126,8 +152,14 @@ const useAuthModule = () => {
     return { mutate, isLoading };
   };
 
-  const ResetPassword = async (payload: ResetPasswordPayload, id: string, token: string): Promise<BaseResponseSuccess> => {
-    return axiosClient.post(`/auth/reset-password/${id}/${token}`, payload).then((res) => res.data);
+  const ResetPassword = async (
+    payload: ResetPasswordPayload,
+    id: string,
+    token: string
+  ): Promise<BaseResponseSuccess> => {
+    return axiosClient
+      .post(`/auth/reset-password/${id}/${token}`, payload)
+      .then((res) => res.data);
   };
 
   const useResetPassword = (id: string, token: string) => {
@@ -136,7 +168,7 @@ const useAuthModule = () => {
       {
         onSuccess: (res) => {
           toastSuccess(res.message);
-          router.push('/login')
+          router.push("/login");
         },
         onError: (error: any) => {
           if (error.response.status == 422) {
@@ -145,13 +177,19 @@ const useAuthModule = () => {
             toastError();
           }
         },
-      } 
+      }
     );
 
-    return { mutate, isLoading }
-  }
+    return { mutate, isLoading };
+  };
 
-  return { useRegister, useLogin, useLupaPassword, useResetPassword };
+  return {
+    useRegister,
+    useLogin,
+    useLupaPassword,
+    useResetPassword,
+    useProfile,
+  };
 };
 
 export default useAuthModule;

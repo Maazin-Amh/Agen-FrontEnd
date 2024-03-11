@@ -5,9 +5,10 @@ interface User {
   nama: string;
   email: string;
   password: string;
-  role: string;
   refresh_token: string;
   access_token: string;
+  avatar: string;
+  role: string;
 }
 
 export interface LoginPayload extends Pick<User, "email" | "password"> {}
@@ -18,8 +19,10 @@ export interface RegisterPayload
 export interface LoginResponse extends BaseResponseSuccess {
   data: User;
 }
-
 export interface ResetPasswordPayload {
-  new_password: string
+  new_password: string;
 }
 export interface LupaPasswordPayload extends Pick<User, "email"> {}
+export interface ProfileResponse extends BaseResponseSuccess {
+  data: User;
+}
