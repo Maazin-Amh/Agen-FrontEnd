@@ -1,92 +1,51 @@
-import { axiosClient } from "@/lib/axiosClient"
-import NextAuth, { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from "next-auth/providers/google"
+import NextAuth, { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
+if (!NEXTAUTH_SECRET || !GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  throw new Error("Please set NEXTAUTH_SECRET, GOOGLE_CLIENT_ID, and GOOGLE_CLIENT_SECRET in your environment variables");
+}
 
-export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+const authOptions: NextAuthOptions = {
+  secret: NEXTAUTH_SECRET,
   providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {},
-
-      async authorize(credentials: any, req) {
-        return {
-          ...credentials
-        }
-      }
-    }),
-
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    })
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+    }),
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
-      try {
-        if(account?.provider == 'google') {
-          const payload: any = {
-            id: user.id,
-            nama: user.name,
-            avatar: user.image,
-            email: user.email,
-            id_token: account?.id_token 
-          }
-  
-          await axiosClient.post('/api/auth/callback/google', payload)
-        }
-        
-        return true   
-      } catch (error) {
-        console.log(error);
-        return false
+    async jwt({ token, user, account, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
       }
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl
-    },
-    async jwt({ token, user, account, profile }) {
 
       return {
         ...token,
         ...user,
-        ...account,
-      }
+      };
     },
-    async session({ session, token }) {
-      if(token.provider == 'google') {
-        const { data } = await axiosClient.get(`/auth/getgoogledata/${token.id}`)
+    async session({ session, user, token }) {
+      session.user.id = Number(token.id);
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.user.role = token.role;
+      session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
 
-        session.user.id = data.data.id;
-        session.user.name = data.data.nama;
-        session.user.email = data.data.email;
-        session.user.accessToken = data.data.access_token;
-        session.user.refreshToken = data.data.refresh_token;
-        session.user.role = data.data.role;
-
-        return session
-      } else {
-        session.user.id = Number(token.id);
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.accessToken = token.accessToken;
-        session.user.refreshToken = token.refreshToken;
-        session.user.role = token.role ;
-
-        return session
-      }
+      return session;
     },
   },
 
   pages: {
-    signIn: "/login",
-    signOut: "/login",
+    signIn: "/auth/login",
+    signOut: "/auth/login",
     error: "/auth/error",
   },
-}
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
