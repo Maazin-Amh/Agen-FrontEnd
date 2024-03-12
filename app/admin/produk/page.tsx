@@ -8,8 +8,11 @@ const Produk = () => {
    {data?.data.map ((produk, index) => (
     <section key={index}>
         {produk.nama_produk}
+        <br />
         {produk.deskripsi_produk}
+        <br />
         {produk.harga}
+        <br />
         {produk.stok}
     </section>
    ))}

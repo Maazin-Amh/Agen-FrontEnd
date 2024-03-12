@@ -12,13 +12,15 @@ const Admin = () => {
   const router = useRouter();
   console.log(profile)
   return (
-    <div>
+    <div className="m-5">
       Admin
       {JSON.stringify(session)}
       <br />
       {JSON.stringify(profile)}
+      <br />
       {status}
-      <Button
+    <section className="space-y-3 mt-5">
+    <Button
         title="produk"
         colorSchema="dark"
         onClick={() => {
@@ -34,6 +36,7 @@ const Admin = () => {
           });
         }}
       />
+    </section>
     </div>
   );
 };

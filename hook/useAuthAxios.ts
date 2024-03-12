@@ -1,11 +1,11 @@
 import { axiosClient } from "@/lib/axiosClient";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
-import { useToast } from "./useToast";
+import { useRefreshToken } from "./useRefreshToken";
 
 const useAxiosAuth = () => {
   const { data: session } = useSession();
-  const { toastWarning } = useToast();
+  const { refreshToken } = useRefreshToken();
 
   useEffect(() => {
     const requestIntercept = axiosClient.interceptors.request.use(
@@ -22,9 +22,24 @@ const useAxiosAuth = () => {
     const responseIntercept = axiosClient.interceptors.response.use(
       async (response: any) => response,
       async (error: any) => {
-        // toastWarning(error.response.message);
-        // signOut();
-        // window.location.replace("/auth/login");
+        const prevRequest = error?.config;
+
+        if (401 === error?.response?.status && !prevRequest?.sent) {
+          prevRequest.sent = true;
+          try {
+            await refreshToken();
+
+            prevRequest.headers[
+              "Authorization"
+            ] = `Bearer ${session?.user?.accessToken}`;
+            return axiosClient(prevRequest);
+          } catch (err) {
+            // signOut();
+            window.location.replace("/auth/login");
+          }
+        } else {
+          return Promise.reject(error);
+        }
       }
     );
 
@@ -32,7 +47,7 @@ const useAxiosAuth = () => {
       axiosClient.interceptors.request.eject(requestIntercept);
       axiosClient.interceptors.response.eject(responseIntercept);
     };
-  }, [session, toastWarning]);
+  }, [session, refreshToken]);
 
   return axiosClient;
 };
