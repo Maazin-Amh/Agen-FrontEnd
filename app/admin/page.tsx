@@ -19,12 +19,20 @@ const Admin = () => {
       {JSON.stringify(profile)}
       <br />
       {status}
+      {profile?.data.avatar}
     <section className="space-y-3 mt-5">
     <Button
         title="produk"
         colorSchema="dark"
         onClick={() => {
         router.push("admin/produk")
+        }}
+      />
+       <Button
+        title="Update"
+        colorSchema="blue"
+        onClick={() => {
+        router.push("admin/update/profile")
         }}
       />
       <Button

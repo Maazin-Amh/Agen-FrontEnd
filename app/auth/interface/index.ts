@@ -11,6 +11,11 @@ interface User {
   role: string;
 }
 
+export interface ProfileUpdatePayload
+  extends Pick<User, "nama" | "id" | "avatar"> {
+  file?: File;
+}
+
 export interface LoginPayload extends Pick<User, "email" | "password"> {}
 export interface RegisterResponse extends BaseResponseSuccess {}
 

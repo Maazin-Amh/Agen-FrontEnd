@@ -4,23 +4,27 @@ import {
   LoginResponse,
   LupaPasswordPayload,
   ProfileResponse,
+  ProfileUpdatePayload,
   RegisterPayload,
   RegisterResponse,
   ResetPasswordPayload,
 } from "../interface";
 import { useRouter } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hook/useToast";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import useAxiosAuth from "@/hook/useAuthAxios";
 import { useSession } from "next-auth/react";
+import useUploadFile from "@/hook/useUploadFile";
 
 const useAuthModule = () => {
   const { toastError, toastSuccess, toastWarning } = useToast();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const axiosAuthClient = useAxiosAuth();
   const { data: session } = useSession();
+  const { uploadSingle } = useUploadFile();
 
   const register = async (
     payload: RegisterPayload
@@ -75,11 +79,54 @@ const useAuthModule = () => {
         staleTime: 1000 * 60 * 60,
         refetchInterval: 1000 * 60 * 60,
         refetchOnWindowFocus: false,
-        enabled : session?.user?.id !== undefined
+        enabled: session?.user?.id !== undefined,
       }
     );
 
     return { data, isFetching, isLoading };
+  };
+
+  const updateProfile = async (
+    payload: ProfileUpdatePayload
+  ): Promise<ProfileResponse> => {
+    if (payload.file !== undefined) {
+      const res = await uploadSingle(payload.file);
+      console.log("res", res);
+
+      payload = {
+        ...payload,
+        avatar: res.data.file_url,
+      };
+    }
+
+    return axiosAuthClient
+      .put("/profile/update", payload)
+      .then((res) => res.data);
+  };
+
+  const useUpdateProfile = () => {
+    const { mutate, isLoading } = useMutation(
+      (payload: ProfileUpdatePayload) => updateProfile(payload),
+      {
+        onSuccess: async (response) => {
+          toastSuccess(response.message);
+          queryClient.invalidateQueries(["/auth/profile"]);
+        },
+        onError: (error: any) => {
+          if (error.response.status == 422) {
+            return toastWarning(error.response.data.message);
+          }
+
+          if (error.response.status == 400) {
+            return toastWarning(error.response.data.message.toString());
+          }
+
+          toastError();
+        },
+      }
+    );
+
+    return { mutate, isLoading };
   };
 
   const useRegister = () => {
@@ -189,6 +236,7 @@ const useAuthModule = () => {
     useLupaPassword,
     useResetPassword,
     useProfile,
+    useUpdateProfile,
   };
 };
 
