@@ -10,7 +10,7 @@ const Admin = () => {
   const { data: profile, isFetching } = useProfile();
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log(profile)
+  console.log(profile);
   return (
     <div className="m-5">
       Admin
@@ -19,32 +19,39 @@ const Admin = () => {
       {JSON.stringify(profile)}
       <br />
       {status}
-      {profile?.data.avatar}
-    <section className="space-y-3 mt-5">
-    <Button
-        title="produk"
-        colorSchema="dark"
-        onClick={() => {
-        router.push("admin/produk")
-        }}
-      />
-       <Button
-        title="Update"
-        colorSchema="blue"
-        onClick={() => {
-        router.push("admin/update/profile")
-        }}
-      />
-      <Button
-        title="Logout"
-        colorSchema="red"
-        onClick={() => {
-          signOut({ redirect: false }).then(() => {
-            router.push("/login");
-          });
-        }}
-      />
-    </section>
+      <picture>
+        <img
+          src={profile?.data.avatar}
+          alt=""
+          draggable="false"
+          className="w-[100px] h-[100px] rounded-full object-cover"
+        />
+      </picture>
+      <section className="space-y-3 mt-5">
+        <Button
+          title="produk"
+          colorSchema="dark"
+          onClick={() => {
+            router.push("admin/produk");
+          }}
+        />
+        <Button
+          title="Update"
+          colorSchema="blue"
+          onClick={() => {
+            router.push("admin/update/profile");
+          }}
+        />
+        <Button
+          title="Logout"
+          colorSchema="red"
+          onClick={() => {
+            signOut({ redirect: false }).then(() => {
+              router.push("/login");
+            });
+          }}
+        />
+      </section>
     </div>
   );
 };
