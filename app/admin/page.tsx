@@ -28,13 +28,7 @@ const Admin = () => {
         />
       </picture>
       <section className="space-y-3 mt-5">
-        <Button
-          title="produk"
-          colorSchema="dark"
-          onClick={() => {
-            router.push("admin/produk");
-          }}
-        />
+       
         <Button
           title="Update"
           colorSchema="blue"
