@@ -28,7 +28,6 @@ const Admin = () => {
         />
       </picture>
       <section className="space-y-3 mt-5">
-       
         <Button
           title="Update"
           colorSchema="blue"

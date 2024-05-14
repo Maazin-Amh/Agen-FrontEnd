@@ -1,10 +1,13 @@
 import useAxiosAuth from "@/hook/useAuthAxios";
 import { usePagination } from "@/hook/usePagination";
-import { useQuery } from "@tanstack/react-query";
-import { ProdukList, ProdukListFilter } from "../interface";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ProdukCreateArrayPayload, ProdukList, ProdukListFilter } from "../interface";
+import { useToast } from "@/hook/useToast";
+import Swal from "sweetalert2";
 
 const useProdukModule = () => {
   const axiosAuthClient = useAxiosAuth();
+  const { toastError, toastSuccess, toastWarning } = useToast();
   const defaultParams = {
     page: 1,
     pageSize: 10,
@@ -38,7 +41,33 @@ const useProdukModule = () => {
     };
   };
 
-  return { useProdukList };
+
+  const useCreateBulProduk = () => {
+    const { mutate, isLoading } = useMutation(
+      (payload: ProdukCreateArrayPayload) => {
+        return axiosAuthClient.post("/produk/create-bulk", payload);
+      },
+      {
+        onSuccess: (response) => {
+          toastSuccess(response.data.message);
+        },
+        onError: (error) => {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Ada Kesalahan",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      }
+    );
+    return { mutate, isLoading };
+  };
+
+
+
+  return { useProdukList, useCreateBulProduk };
 };
 
 export default useProdukModule;
