@@ -6,9 +6,8 @@ interface Produk {
   nama_produk: string;
   deskripsi_produk: string;
   barcode: string;
-  harga: number | null ;
+  harga: number | null;
   stok: number | null;
-
   created_by: {
     id: number;
     nama: string;
@@ -18,7 +17,7 @@ interface Produk {
     id: number;
     nama: string;
   };
-  
+
   kategori: {
     id: number;
     nama_kategori: string;
@@ -42,7 +41,22 @@ export interface ProdukCreatePayload
   kategori_id: number | null;
 }
 
-
 export interface ProdukCreateArrayPayload {
   data: ProdukCreatePayload[];
+}
+
+export interface ProdukDetailResponse extends Produk {
+  kategori_id: number | null;
+}
+export interface ProdukUpdateResponse {
+  status: string;
+  message: string;
+  data?: Produk;
+}
+export interface ProdukUpdatePayload
+  extends Pick<
+    Produk,
+    "harga" | "nama_produk" | "deskripsi_produk" | "stok" | "id"
+  > {
+  kategori_id: number | null;
 }

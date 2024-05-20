@@ -9,7 +9,7 @@ interface CurrencyInputProps {
   value: string | number | undefined;
   messageError?: string;
   error?: any;
-  touched: any;
+  touched?: any;
   perfix?: string;
   onValueChange: (value: string | number | undefined) => void;
 }

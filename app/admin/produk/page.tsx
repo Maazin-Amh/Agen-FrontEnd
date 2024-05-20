@@ -2,6 +2,7 @@
 import Button from "@/components/Button";
 import useProdukModule from "./lib";
 import { useRouter } from "next/navigation";
+import { EditButton } from "@/components/ButtonAction";
 
 const Produk = () => {
   const { useProdukList } = useProdukModule();
@@ -150,7 +151,13 @@ const Produk = () => {
                           </span>
                         </button>
                       </td>
+                      <EditButton
+                    onClick={() => {
+                      router.push(`produk/${produk.id}/update`);
+                    }}
+                  />
                     </tr>
+                    
                   ))}
                 </tbody>
               </table>
