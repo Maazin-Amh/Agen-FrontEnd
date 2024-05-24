@@ -72,7 +72,7 @@ export default function UpdateProduk({ params }: { params: { id: string } }) {
   return (
     <section className="flex items-center absolute justify-center w-full h-full">
       <section className="w-1/3">
-        <h2 className="text-xl font-bold text-gray-500">Update User</h2>
+        <h2 className="text-xl font-bold text-gray-500">Update Produk</h2>
         <FormikProvider value={formik}>
           <Form onSubmit={handleSubmit} className="space-y-5">
             <section>

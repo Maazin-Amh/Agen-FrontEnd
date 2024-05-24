@@ -21,7 +21,7 @@ export default function AdminLayout({
     },
     {
       label: "Kategori",
-      url: "/kategori",
+      url: "/admin/kategori",
     },
     {
       label: "Produk",
@@ -29,7 +29,11 @@ export default function AdminLayout({
     },
     {
       label: "Konsumen",
-      url: "/konsumen",
+      url: "/admin/konsumen",
+    },
+    {
+      label: "Order",
+      url: "/admin/order",
     },
   ];
   return (
