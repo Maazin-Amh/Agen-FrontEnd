@@ -2,6 +2,7 @@
 import Button from "@/components/Button";
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
+import useWebSocket from "./chat/socket/useWebsocket";
 
 export default function AdminLayout({
   children,
@@ -9,6 +10,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const {socket} = useWebSocket()
   const pathname = usePathname();
   const list = [
     {
@@ -35,7 +37,12 @@ export default function AdminLayout({
       label: "Order",
       url: "/admin/order",
     },
+    {
+      label: "Chat",
+      url: "/admin/chat",
+    },
   ];
+  console.log('socket', socket)
   return (
     <div className="grid grid-cols-7 h-screen">
       <div className=" border-r-[1px]  border-gray-400">
