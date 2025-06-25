@@ -15,7 +15,7 @@ export const ResetPwSchema = yup.object().shape({
     .string()
     .nullable()
     .default("")
-    .required("isi terlebih dahulu")
+    .required()
     .min(8, "Minimal 8 karakater"),
 });
 
@@ -35,12 +35,13 @@ const LupaPw = ({ params }: { params: { id: string; token: string } }) => {
   const { handleChange, handleSubmit, handleBlur, values, errors } = formik;
 
   return (
-    <section className="m-10">
-      <div className="flex items-center justify-center w-full">
+    <section className="mt-10 flex item-center justify-center">
+     
+      <FormikProvider value={formik}>
+        <Form className="space-y-8 bg-white border border-grey-200 w-[500px] rounded-lg p-10" onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center w-full">
         <h1 className="text-2xl font-bold text-gray-800">Reset Password</h1>
       </div>
-      <FormikProvider value={formik}>
-        <Form className="space-y-5" onSubmit={handleSubmit}>
           <section>
             <Label htmlFor="new_password" title="New Password" />
             <InputText
@@ -61,7 +62,7 @@ const LupaPw = ({ params }: { params: { id: string; token: string } }) => {
             <Button
               width="login"
               title="Reset Password"
-              colorSchema="red"
+              colorSchema="green"
               isLoading={isLoading}
               isDisabled={isLoading}
             />

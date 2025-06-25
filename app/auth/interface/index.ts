@@ -1,33 +1,37 @@
 import { BaseResponseSuccess } from "@/lib/axiosClient";
 
-interface User {
+interface Customer {
   id?: number;
   nama: string;
   email: string;
-  password: string;
+  password: string | undefined;
+  alamat: string;
+  role: string;
   refresh_token: string;
   access_token: string;
-  avatar: string;
-  role: string;
+  created_at:string;
 }
 
-export interface ProfileUpdatePayload
-  extends Pick<User, "nama" | "id" | "avatar"> {
-  file?: File;
-}
-
-export interface LoginPayload extends Pick<User, "email" | "password"> {}
-export interface RegisterResponse extends BaseResponseSuccess {}
+export interface LoginPayload extends Pick<Customer, "email" | "password"> {}
 
 export interface RegisterPayload
-  extends Pick<User, "nama" | "email" | "password"> {}
+  extends Pick<Customer, "nama" | "alamat" | "password" | "email"> {}
+
 export interface LoginResponse extends BaseResponseSuccess {
-  data: User;
+  data: Customer;
 }
+
 export interface ResetPasswordPayload {
   new_password: string;
 }
-export interface LupaPasswordPayload extends Pick<User, "email"> {}
+export interface LupaPasswordPayload extends Pick<Customer, "email"> {}
+
+export interface RegisterResponse extends BaseResponseSuccess {}
+
 export interface ProfileResponse extends BaseResponseSuccess {
-  data: User;
+  data: Customer;
+}
+
+export interface ProfileUpdatePayload
+  extends Pick<Customer, "alamat" | "id" > {
 }

@@ -1,22 +1,29 @@
+import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware(req) {
-    console.log("token", req.nextauth.token);
+  function middleware(request) {
+    const url = request.nextUrl.pathname;
+    const role = request.nextauth?.token?.role;
+
+    // ⛔ Jika user adalah customer dan mencoba ke halaman admin
+    if (role === "customer" && url.startsWith("/dashboard/admin")) {
+      return NextResponse.redirect(new URL("/dashboard/customer", request.url));
+    }
+
+    return NextResponse.next(); // ✅ Admin bebas masuk ke mana saja
   },
   {
     callbacks: {
-      authorized: ({ token }) => {
-        if (token) return true;
-        return false;
-      },
+      authorized: ({ token }) => !!token, // hanya jika ada token
     },
     pages: {
-      signIn: "/auth/login",
-      error: '/api/auth/error',
+      signIn: "/login",
     },
   }
 );
 
-export const config = { matcher: ["/admin", "/admin/:path*"] };
+// ⛳ Aktifkan middleware di semua rute dashboard
+export const config = {
+  matcher: ["/dashboard/:path*"],
+};

@@ -11,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: "/register",
-        destination: "/auth/register",
+        destination: "/auth/create",
       },
       {
         source: "/login",

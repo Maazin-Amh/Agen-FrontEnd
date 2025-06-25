@@ -23,31 +23,21 @@ export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
     }));
   };
 
-  const handeFilter = (e?:any) => {
-    setParams((prevParams) => {
-      return {
-        ...prevParams,
-        page: 1,
-      };
-    });
+  const handeFilter = (e?: any) => {
+  const keyword = e?.target?.value ?? "";
 
-    if (e == undefined) {
-      setFilterParams(() => {
-        return {
-          ...params,
-          page: 1,
-        };
-      });
-    } else {
-      setFilterParams(() => {
-        return {
-          ...params,
-          nama: e.target.value,
-          page: 1,
-        };
-      });
-    }
-  };
+  setParams((prevParams) => {
+    const updatedParams = {
+      ...prevParams,
+      nama_produk: keyword,
+      page: 1,
+    };
+
+    setFilterParams(updatedParams); // ✅ pakai hasil yang sudah update
+
+    return updatedParams;
+  });
+};
 
   const handlePage = (page: number) => {
     setParams((params) => ({ ...params, page: page }));

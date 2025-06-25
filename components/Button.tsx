@@ -40,9 +40,9 @@ const Button: React.FC<
         "bg-teal-500 text-white": colorSchema === "teal" && variant === "solid",
         "border-red-500 text-red-500 ":
           colorSchema === "red" && variant === "outline",
-        "bg-green-500 text-white":
+        "bg-green-800 text-white":
           colorSchema === "green" && variant === "solid",
-        "border-green-500 text-green-500":
+        "border-green-800 text-green-800":
           colorSchema === "green" && variant === "outline",
         "opacity-25": isDisabled,
         "w-24": width === "md",

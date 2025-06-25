@@ -24,14 +24,14 @@ const InputText: React.FC<
         value={value}
         id={id}
         name={name}
-        className={clsx(`w-full py-2 pl-4 block border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500`, {
+        className={clsx(`w-full py-2 pl-4 block border border-gray-200 rounded-md text-sm `, {
           "border-red-500 border-2": isError,
           "border-gray-700": !isError,
         })}
         {...props}
       />
       {isError ? (
-        <p className="text-red-500 font-bold">{messageError}</p>
+        <p className="text-red-500 font-medium text-sm">{messageError}</p>
       ) : (
         <></>
       )}

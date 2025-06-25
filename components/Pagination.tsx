@@ -4,9 +4,9 @@ import clsx from "clsx";
 
 interface PaginationProps {
   handlePageSize?: (e: ChangeEvent<any>) => void;
-  handlePage: (page : number) => void;
+  handlePage: (page: number) => void;
 
-  page?: number | string ;
+  page?: number | string;
   pageSize?: number | string;
 
   pagination:
@@ -105,14 +105,15 @@ export const Pagination: React.FC<PaginationProps> = ({
         {pages.pages.map((pageItem, index) => (
           <button
             key={index}
-            onClick={()=> {
-              handlePage(pageItem)
+            onClick={() => {
+              handlePage(pageItem);
             }}
             className={clsx(
-              ` w-10 h-10 rounded-full text-sm `,
+              ` w-10 h-10 rounded-lg text-sm `,
               {
-                "text-white  bg-slate-900": page === pageItem,
-                "text-slate-900  border  border-slate-900/60": page !== pageItem,
+                " text-slate-900  border  border-slate-900/60":
+                  page === pageItem,
+                "text-slate-950 bg-white border": page !== pageItem,
               },
               {}
             )}

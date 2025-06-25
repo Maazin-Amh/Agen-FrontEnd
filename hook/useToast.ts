@@ -1,33 +1,44 @@
-import Swal from "sweetalert2";
+// hooks/useToast.ts
+"use client";
+
+import { useToast as chakraUseToast } from "@chakra-ui/react";
+
 export const useToast = () => {
+  const toast = chakraUseToast();
+
   const toastSuccess = (message: string) => {
-    Swal.fire({
-      position: "top",
-      icon: "success",
+    toast({
       title: message,
-      showConfirmButton: false,
-      timer: 1000,
+      status: "success",
+      position: "bottom-right",
+      isClosable: true,
+      colorScheme: "green",
     });
   };
 
   const toastWarning = (message: string) => {
-    Swal.fire({
-      position: "top",
-      icon: "warning",
+    toast({
       title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  };
-  const toastError = () => {
-    Swal.fire({
-      position: "top",
-      icon: "warning",
-      title: "Ada Kesalahan",
-      showConfirmButton: false,
-      timer: 1500,
+      status: "warning",
+      position: "bottom-right",
+      isClosable: true,
+      colorScheme: "yellow",
     });
   };
 
-  return { toastError, toastWarning, toastSuccess };
+  const toastError = (message = "Maaf, ada kesalahan.") => {
+    toast({
+      title: message,
+      status: "error",
+      position: "bottom-right",
+      isClosable: true,
+      colorScheme: "red",
+    });
+  };
+
+  return {
+    toastSuccess,
+    toastWarning,
+    toastError,
+  };
 };
